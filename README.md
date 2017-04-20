@@ -20,3 +20,15 @@ and HttpsManagerApacheLib for two way authentication. i just comment / uncomment
 the line i needed to test
 
 
+by the way, the TLS1.2 script for generating certificates did not include how to generate
+keystore and truststore that is compatible with android, please use the following lines
+in addition to that script to generate the BKS format for android. the BouncyCastle
+library is in the root directory. you can download it yourself if you want.
+
+/**create bks truststore for android
+keytool -importkeystore -srckeystore tomcatclienttruststore.jks -srcstoretype JKS -srcstorepass 123456 -destkeystore tomcatclienttruststore.bks -deststoretype BKS -deststorepass 123456 -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar
+/**create bks keystore for android
+keytool -importkeystore -srckeystore tomcatclient.jks -srcstoretype JKS -srcstorepass 123456 -destkeystore tomcatclient.bks -deststoretype BKS -deststorepass 123456 -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar
+/**view contents
+keytool -list -v -keystore tomcatclienttruststore.bks -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar -storetype BKS -storepass 123456
+keytool -list -v -keystore tomcatclient.bks -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar -storetype BKS -storepass 123456
