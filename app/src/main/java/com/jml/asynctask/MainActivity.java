@@ -155,8 +155,9 @@ public class MainActivity extends Activity {
             //String content = HttpManager.getData(params[0]);
             //String content = HttpsManager.getData(context, params[0]);
             //String content = HttpsManagerLocalhost.getData(context, params[0]);
-            String content = HttpsManagerLocalhost.getDataBks(context, params[0]); //one way authentication
+            //String content = HttpsManagerLocalhost.getDataBks(context, params[0]); //one way authentication
             //String content = HttpsManagerApacheLib.getData(context, params[0]); //two way authentication
+            String content = HttpsManagerAndroid.getData(context, params[0]); //one way authentication
             return content;
         }
 
