@@ -32,3 +32,6 @@ keytool -importkeystore -srckeystore tomcatclient.jks -srcstoretype JKS -srcstor
 /**view contents
 keytool -list -v -keystore tomcatclienttruststore.bks -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar -storetype BKS -storepass 123456
 keytool -list -v -keystore tomcatclient.bks -provider org.bouncycastle.jce.provider.BouncyCastleProvider -providerpath bcprov-jdk15on-156.jar -storetype BKS -storepass 123456
+
+
+i used Android Studio by the way for this project
