@@ -1,6 +1,5 @@
 package com.jml.asynctask;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -14,27 +13,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.Socket;
-import java.net.URL;
-import java.security.KeyStore;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManagerFactory;
 
 
 //public class MainActivity extends AppCompatActivity {
@@ -107,28 +87,6 @@ public class MainActivity extends Activity {
             return false;
         }
     }
-
-    protected Socket getSocketConnection(String ip, int port) throws IOException {
-        try {
-            KeyStore trustStore = KeyStore.getInstance("BKS");
-            InputStream trustStoreStream = context.getResources().openRawResource(R.raw.tomcatclient);
-            trustStore.load(trustStoreStream, "keypass".toCharArray());
-
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init(trustStore);
-
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
-            SSLSocketFactory factory = sslContext.getSocketFactory();
-            SSLSocket socket = (SSLSocket) factory.createSocket(ip, port);
-            socket.setEnabledCipherSuites(SSLUtils.getCipherSuitesWhiteList(socket.getEnabledCipherSuites()));
-            return socket;
-        } catch (Exception e) {
-            Log.e(this.getClass().toString(), "Exception while creating context: ", e);
-            throw new IOException("Could not connect to SSL Server", e);
-        }
-    }
-
 
     private class MyTask extends AsyncTask<String, String, String> {
 
