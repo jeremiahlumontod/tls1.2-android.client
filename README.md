@@ -1,5 +1,14 @@
 # tls1.2-android.client
 
+Updates:
+added native android HttpsURLConnection
+
+
+
+
+
+
+OLD NOTES:
 a sample android client for TLS1.2 implementation
 NOTE: the code includes a hack that prevents checking the certificate holder, the
 fix would be to create a certificate for the certificate user, like for example,
