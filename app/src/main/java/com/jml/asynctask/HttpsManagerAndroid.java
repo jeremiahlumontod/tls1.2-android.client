@@ -46,6 +46,17 @@ public class HttpsManagerAndroid {
                 }
             };
 
+            //set hostname verifier to accept any certificate issued
+            //to any host. by default certificate will be check
+            //if the client/certificate user (in this instance the android application)
+            //and the supposed to be owner of the certificate
+            //since our certificate is issued for localhost and since
+            //android default ip to access to localhost is 10.0.2.2
+            //my machine localhost ip will be the ip4 or 127.0.0.1
+            //and this is a mismatch and the exception error message
+            //usually is encrypted (pun intended).
+            //for production, remove this hostname verifier assignment
+            //and issue a certificate to the client (forgot the syntax how)
             HttpsURLConnection.setDefaultHostnameVerifier(nullHostNameVerifier);
 
             //CertificateFactory cf = CertificateFactory.getInstance("X509");
@@ -140,57 +151,8 @@ public class HttpsManagerAndroid {
             //sslcontext.init(null, tmf.getTrustManagers(), null);
             sslContext.init(null, new X509TrustManager[]{new NullX509TrustManager()}, new SecureRandom());
 
-
-            // Create an HostnameVerifier that hardwires the expected hostname.
-            // Note that is different than the URL's hostname:
-            // example.com versus example.org
-            /**HostnameVerifier hostnameVerifier = new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    HostnameVerifier hv =
-                            HttpsURLConnection.getDefaultHostnameVerifier();
-                    return hv.verify("https://10.0.2.2:8443", session);
-                }
-            };*/
-
-            HostnameVerifier nullHostNameVerifier = new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
-                    return hv.verify("https://10.0.2.2:8443", session);
-                }
-            };
-
-            /**HostnameVerifier hostnameVerifier = new HostnameVerifier() {
-
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    Log.i(TAG, "HOST NAME " + hostname);
-                    if (hostname.contentEquals("10.0.2.2")) {
-                        Log.i(TAG, "Approving certificate for host " + hostname);
-                        System.out.println("Approving certificate for host " + hostname);
-                        return true;
-                    }else{
-                        Log.i(TAG, "Denying certificate for host " + hostname);
-                        System.out.println("Denying certificate for host " + hostname);
-                    }
-                    return false;
-                }
-            };*/
-
-
-            HostnameVerifier hostnameVerifier = new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession session) {
-                    return true;
-                }
-            };
-
             URL url = new URL(urlString);
             HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-            // Tell the URLConnection to use a SocketFactory from our SSLContext
-            //urlConnection.setHostnameVerifier(hostnameVerifier);
-            //urlConnection.setDefaultHostnameVerifier(hostnameVerifier);
             urlConnection.setSSLSocketFactory(sslContext.getSocketFactory());
             urlConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
             return urlConnection;
